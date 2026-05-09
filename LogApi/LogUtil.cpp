@@ -322,6 +322,10 @@ void CLogUtil::HudMessage(edict_t *pEntity, hudtextparms_t textparms,
 }
 
 void CLogUtil::ShowMotd(edict_t *pEntity, char *Motd, int MotdLength) {
+  if (!Motd || Motd[0u] == '\0') {
+    return;
+  }
+
   static int iMsgMOTD;
 
   if (iMsgMOTD ||

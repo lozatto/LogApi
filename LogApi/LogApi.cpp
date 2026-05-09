@@ -33,14 +33,16 @@ void CLogApi::ServerActivate() {
       // Set file pointer to start of file
       fseek(fp, 0, SEEK_SET);
 
-      // Create empty std::string with file size
-      std::string buffer(fs, '\0');
-
-      // Read file to std::string buffer
-      size_t elements = fread(&buffer[0], 1, fs, fp);
-
       // If read something
-      if (elements > 0) {
+      if (fs > 0) {
+        // Create empty std::string with file size
+        std::string buffer(fs, '\0');
+
+        // Read file to std::string buffer
+        size_t elements = fread(&buffer[0], 1, fs, fp);
+
+        // If read something
+        if (elements > 0) {
         // Read data
         auto json = nlohmann::ordered_json::parse(buffer, nullptr, true, true);
 
@@ -59,9 +61,9 @@ void CLogApi::ServerActivate() {
       LOG_CONSOLE(PLID, "[%s] Failed to open file: %s", __func__,
                   LOG_API_FILE_EVENTS);
     }
-  } catch (const nlohmann::ordered_json::parse_error &e) {
-    // JSON exeption errors
-    LOG_CONSOLE(PLID, "[%s] %s", __func__, e.what());
+  } catch (const std::exception &e) {
+    // JSON or other exception errors
+    LOG_CONSOLE(PLID, "[%s] Exception: %s", __func__, e.what());
   }
 }
 
@@ -193,9 +195,9 @@ void CLogApi::CallbackResult(CURL *ch, size_t Size, const char *Memory,
                   gLogApi.EventResult(EventIndex, Result);
                 }
               }
-            } catch (const nlohmann::ordered_json::parse_error &e) {
+            } catch (const std::exception &e) {
               // Log
-              LOG_CONSOLE(PLID, "[%s] %s", __func__, e.what());
+              LOG_CONSOLE(PLID, "[%s] Exception: %s", __func__, e.what());
             }
           }
         }

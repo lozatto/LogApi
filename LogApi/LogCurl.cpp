@@ -27,8 +27,7 @@ void CLogCurl::ServerFrame() {
 
     curl_multi_perform(this->m_MultiHandle, &HandleCount);
 
-    while (ProcessedThisFrame < 5 && (MsgInfo = curl_multi_info_read(
-                                          this->m_MultiHandle, &HandleCount))) {
+    while ((MsgInfo = curl_multi_info_read(this->m_MultiHandle, &HandleCount))) {
       if (MsgInfo->msg == CURLMSG_DONE) {
         char *pPrivate = nullptr;
         if (curl_easy_getinfo(MsgInfo->easy_handle, CURLINFO_PRIVATE, &pPrivate) == CURLE_OK && pPrivate) {
@@ -103,6 +102,8 @@ void CLogCurl::PostJSON(const char *url, long Timeout, std::string BearerToken,
 
         curl_easy_setopt(ch, CURLOPT_SSL_VERIFYPEER, 1L);
         curl_easy_setopt(ch, CURLOPT_SSL_VERIFYHOST, 2L);
+
+        curl_easy_setopt(ch, CURLOPT_NOSIGNAL, 1L);
 
         curl_easy_setopt(ch, CURLOPT_WRITEDATA,
                          (void *)&this->m_Data[this->m_RequestIndex]);
