@@ -514,7 +514,8 @@ nlohmann::ordered_json CLogApi::GetServerInfo() {
   ServerInfo["Hostname"] = Hostname ? Hostname : "";
 
   // Set map name
-  ServerInfo["Map"] = STRING(gpGlobals->mapname);
+  auto MapName = STRING(gpGlobals->mapname);
+  ServerInfo["Map"] = MapName ? MapName : "";
 
   // Set game
   ServerInfo["Game"] = "Counter-Strike";

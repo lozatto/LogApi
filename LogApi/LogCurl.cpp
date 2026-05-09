@@ -4,7 +4,7 @@ CLogCurl gLogCurl;
 
 void CLogCurl::ServerActivate() {
   if (!this->m_MultiHandle) {
-    this->m_RequestIndex = 0;
+    this->m_RequestIndex = 1;
 
     this->m_Data.clear();
 
@@ -27,21 +27,22 @@ void CLogCurl::ServerFrame() {
                                           this->m_MultiHandle, &HandleCount))) {
       if (MsgInfo->msg == CURLMSG_DONE) {
         char *pPrivate = nullptr;
-        curl_easy_getinfo(MsgInfo->easy_handle, CURLINFO_PRIVATE, &pPrivate);
-        long Index = (long)(intptr_t)pPrivate;
+        if (curl_easy_getinfo(MsgInfo->easy_handle, CURLINFO_PRIVATE, &pPrivate) == CURLE_OK && pPrivate) {
+          long Index = (long)(intptr_t)pPrivate;
 
-        if (this->m_Data.find(Index) != this->m_Data.end()) {
-          gLogApi.CallbackResult(MsgInfo->easy_handle, this->m_Data[Index].Size,
-                                 this->m_Data[Index].Memory,
-                                 this->m_Data[Index].EventIndex);
+          if (this->m_Data.find(Index) != this->m_Data.end()) {
+            gLogApi.CallbackResult(MsgInfo->easy_handle, this->m_Data[Index].Size,
+                                   this->m_Data[Index].Memory,
+                                   this->m_Data[Index].EventIndex);
 
-          free(this->m_Data[Index].Memory);
+            free(this->m_Data[Index].Memory);
 
-          if (this->m_Data[Index].Headers) {
-            curl_slist_free_all(this->m_Data[Index].Headers);
+            if (this->m_Data[Index].Headers) {
+              curl_slist_free_all(this->m_Data[Index].Headers);
+            }
+
+            this->m_Data.erase(Index);
           }
-
-          this->m_Data.erase(Index);
         }
 
         curl_multi_remove_handle(this->m_MultiHandle, MsgInfo->easy_handle);

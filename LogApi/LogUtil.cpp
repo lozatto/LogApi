@@ -26,9 +26,11 @@ void CLogUtil::ClientPrint(edict_t *pEntity, int msg_dest, const char *Format,
       Length = 125;
     }
 
-    Buffer[Length++] = '\n';
-    Buffer[Length++] = '\n';
-    Buffer[Length] = 0;
+    if (Length < (int)sizeof(Buffer) - 3) {
+      Buffer[Length++] = '\n';
+      Buffer[Length++] = '\n';
+      Buffer[Length] = 0;
+    }
   }
 
   static int iMsgTextMsg;
