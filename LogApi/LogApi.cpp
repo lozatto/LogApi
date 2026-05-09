@@ -140,11 +140,20 @@ void CLogApi::SendEvent(int EventIndex, nlohmann::ordered_json Event) {
             if (!Event.empty()) {
               if (gLogCvar.m_Timeout) {
                 if (gLogCvar.m_Bearer) {
-                  // POST to webserver
-                  gLogCurl.PostJSON(gLogCvar.m_Address->string,
-                                    (long)gLogCvar.m_Timeout->value,
-                                    gLogCvar.m_Bearer->string, Event.dump(),
-                                    EventIndex);
+                  try {
+                    // POST to webserver
+                    // Use error_handler_t::replace to avoid crashes on invalid UTF-8
+                    gLogCurl.PostJSON(
+                        gLogCvar.m_Address->string,
+                        (long)gLogCvar.m_Timeout->value,
+                        gLogCvar.m_Bearer->string,
+                        Event.dump(-1, ' ', false,
+                                   nlohmann::ordered_json::error_handler_t::replace),
+                        EventIndex);
+                  } catch (const std::exception &e) {
+                    LOG_CONSOLE(PLID, "[%s] JSON Serialization error: %s",
+                                __func__, e.what());
+                  }
                 }
               }
             }
