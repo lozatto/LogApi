@@ -53,9 +53,10 @@ void CLogApi::ServerActivate() {
               std::make_pair(event.key(), event.value().get<bool>()));
         }
       }
+    }
 
-      // Close file pointer
-      fclose(fp);
+    // Close file pointer
+    fclose(fp);
     } else {
       // Failed on error
       LOG_CONSOLE(PLID, "[%s] Failed to open file: %s", __func__,
