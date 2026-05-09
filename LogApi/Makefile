@@ -17,8 +17,8 @@ BUILD_TARGET=linux32
 BUILD_EXTENSION=so
 BUILD_OBJECTS=$(BUILD_SOURCES:%.cpp=$(BUILD_DIR)/%.o)
 BUILD_COMPILER=c++
-BUILD_LINKER=-static-libgcc -static-libstdc++ -lcurl -lssl -lcrypto -ldl -lm -lz
-BUILD_CCFLAGS=$(BUILD_CFLAGS) -DNDEBUG -Dlinux -D__linux__ -D__BUILD__ -D_GLIBCXX_USE_CXX11_ABI=0 -DHTTP_ONLY
+BUILD_LINKER=-lcurl -lssl -lcrypto -ldl -lm -lz
+BUILD_CCFLAGS=$(BUILD_CFLAGS) -DNDEBUG -Dlinux -D__linux__ -D__BUILD__ -D_GLIBCXX_USE_CXX11_ABI=0 -DCURL_STATICLIB -DHTTP_ONLY
 #
 # Include directory
 SRCDIR=.

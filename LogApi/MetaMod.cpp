@@ -30,6 +30,10 @@ C_DLLEXPORT void WINAPI GiveFnptrsToDll(enginefuncs_t *pengfuncsFromEngine,
 C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable,
                             meta_globals_t *pMGlobals,
                             gamedll_funcs_t *pGamedllFuncs) {
+  if (gpMetaUtilFuncs) {
+    gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] Meta_Attach Start", Plugin_info.logtag);
+  }
+
   gpMetaGlobals = pMGlobals;
 
   gpGamedllFuncs = pGamedllFuncs;
@@ -54,6 +58,10 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable,
 
   ReGameDLL_Init();
 
+  if (gpMetaUtilFuncs) {
+    gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] Meta_Attach Finished", Plugin_info.logtag);
+  }
+
   return TRUE;
 }
 
@@ -70,6 +78,10 @@ C_DLLEXPORT int Meta_Query(char *interfaceVersion, plugin_info_t **pPlugInfo,
   *pPlugInfo = PLID;
 
   gpMetaUtilFuncs = pMetaUtilFuncs;
+
+  if (gpMetaUtilFuncs) {
+    gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] Meta_Query Finished", Plugin_info.logtag);
+  }
 
   return TRUE;
 }
