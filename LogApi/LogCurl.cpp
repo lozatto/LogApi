@@ -143,6 +143,9 @@ size_t CLogCurl::WriteMemoryCallback(void *contents, size_t size, size_t nmemb,
           mem->Memory[mem->Size] = 0;
 
           return realsize;
+        } else {
+            // Log memory error
+            LOG_CONSOLE(PLID, "[%s] Memory allocation failed!", __func__);
         }
       }
     }

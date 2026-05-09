@@ -57,6 +57,8 @@ void CLogApi::ServerActivate() {
 
     // Close file pointer
     fclose(fp);
+
+    LOG_CONSOLE(PLID, "[%s] Loaded %d events from %s", __func__, this->m_Events.size(), LOG_API_FILE_EVENTS);
     } else {
       // Failed on error
       LOG_CONSOLE(PLID, "[%s] Failed to open file: %s", __func__,
@@ -66,6 +68,8 @@ void CLogApi::ServerActivate() {
     // JSON or other exception errors
     LOG_CONSOLE(PLID, "[%s] Exception: %s", __func__, e.what());
   }
+
+  LOG_CONSOLE(PLID, "[%s] Finished", __func__);
 }
 
 // On server deactivate
@@ -531,12 +535,13 @@ nlohmann::ordered_json CLogApi::GetServerInfo() {
 
   // If CSGameRules is not null
   if (g_pGameRules) {
+    auto Rules = CSGameRules();
     // If server has game description
-    if (CSGameRules()->m_GameDesc) {
+    if (Rules && Rules->m_GameDesc) {
       // If is not empty
-      if (CSGameRules()->m_GameDesc[0u] != '\0') {
+      if (Rules->m_GameDesc[0u] != '\0') {
         // Set game description name
-        ServerInfo["Game"] = CSGameRules()->m_GameDesc;
+        ServerInfo["Game"] = Rules->m_GameDesc;
       }
     }
   }

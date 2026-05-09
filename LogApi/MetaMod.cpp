@@ -121,15 +121,27 @@ C_DLLEXPORT int GetEntityAPI2_Post(DLL_FUNCTIONS *pFunctionTable,
 
 void DLL_POST_ServerActivate(edict_t *pEdictList, int edictCount,
                              int clientMax) {
+  LOG_CONSOLE(PLID, "[%s] Start", __func__);
+
   gLogCvar.ServerActivate();
+
+  LOG_CONSOLE(PLID, "[%s] LogCvar initialized", __func__);
 
   gLogApi.ServerActivate();
 
+  LOG_CONSOLE(PLID, "[%s] LogApi initialized", __func__);
+
   gLogCurl.ServerActivate();
+
+  LOG_CONSOLE(PLID, "[%s] LogCurl initialized", __func__);
 
   gLogCommand.ServerActivate();
 
+  LOG_CONSOLE(PLID, "[%s] LogCommand initialized", __func__);
+
   gLogEvent.ServerActivate(pEdictList, edictCount, clientMax);
+
+  LOG_CONSOLE(PLID, "[%s] LogEvent initialized", __func__);
 
   RETURN_META(MRES_IGNORED);
 }

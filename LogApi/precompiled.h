@@ -38,9 +38,9 @@
 #include <array>
 
 // cURL sources
-#ifndef CURL_STATICLIB
-#define CURL_STATICLIB
-#endif
+//#ifndef CURL_STATICLIB
+//#define CURL_STATICLIB
+//#endif
 
 // cURL sources
 #include <curl/curl.h>
