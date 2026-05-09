@@ -211,7 +211,7 @@ void CLogApi::CallbackResult(CURL *ch, size_t Size, const char *Memory,
 }
 
 // Parse event result
-void CLogApi::EventResult(int EventIndex, nlohmann::ordered_json Data) {
+void CLogApi::EventResult(int EventIndex, const nlohmann::ordered_json& Data) {
   // Check if has event 'ServerCommand' result from api
   if (Data.contains("ServerCommand")) {
     this->ServerCommand(EventIndex, Data);
@@ -239,7 +239,7 @@ void CLogApi::EventResult(int EventIndex, nlohmann::ordered_json Data) {
 }
 
 // Execute server command from result
-void CLogApi::ServerCommand(int EventIndex, nlohmann::ordered_json Data) {
+void CLogApi::ServerCommand(int EventIndex, const nlohmann::ordered_json& Data) {
   if (gLogCvar.m_ExecCommands) {
     if (gLogCvar.m_ExecCommands->value <= 0.0f) {
       return;
@@ -289,7 +289,7 @@ void CLogApi::ServerCommand(int EventIndex, nlohmann::ordered_json Data) {
 }
 
 // Open menu from result
-void CLogApi::ShowMenu(int EventIndex, nlohmann::ordered_json Data) {
+void CLogApi::ShowMenu(int EventIndex, const nlohmann::ordered_json& Data) {
   if (!Data[__func__].empty()) {
     if (Data[__func__].is_object()) {
       if (!Data[__func__]["Items"].empty()) {
@@ -339,7 +339,7 @@ void CLogApi::ShowMenu(int EventIndex, nlohmann::ordered_json Data) {
 
 // Open menu function
 void CLogApi::Menu(int EntityIndex, std::string Title, bool Exit,
-                   std::string Callback, nlohmann::ordered_json Items) {
+                   std::string Callback, const nlohmann::ordered_json& Items) {
   auto Player = UTIL_PlayerByIndexSafe(EntityIndex);
 
   if (Player) {
@@ -378,7 +378,7 @@ void CLogApi::MenuHandle(int EntityIndex, std::string Callback,
 }
 
 // Print to client from result
-void CLogApi::ClientPrint(int EventIndex, nlohmann::ordered_json Data) {
+void CLogApi::ClientPrint(int EventIndex, const nlohmann::ordered_json& Data) {
   // If is not empty
   if (!Data[__func__].empty()) {
     try {
@@ -402,8 +402,10 @@ void CLogApi::ClientPrint(int EventIndex, nlohmann::ordered_json Data) {
           // If has entity index
           if (EntityId > 0) {
             // Get entity pointer
-            pEntity =
-                FNullEnt(INDEXENT(EntityId)) ? INDEXENT(EntityId) : nullptr;
+            auto Player = UTIL_PlayerByIndexSafe(EntityId);
+            if (Player) {
+              pEntity = Player->edict();
+            }
           }
 
           // If is not empty
@@ -420,7 +422,7 @@ void CLogApi::ClientPrint(int EventIndex, nlohmann::ordered_json Data) {
 }
 
 // Print to player chat from result
-void CLogApi::PrintChat(int EventIndex, nlohmann::ordered_json Data) {
+void CLogApi::PrintChat(int EventIndex, const nlohmann::ordered_json& Data) {
   // If is not empty
   if (!Data[__func__].empty()) {
     try {
@@ -440,8 +442,10 @@ void CLogApi::PrintChat(int EventIndex, nlohmann::ordered_json Data) {
           // If has entity index
           if (EntityId > 0) {
             // Get entity pointer
-            pEntity =
-                FNullEnt(INDEXENT(EntityId)) ? INDEXENT(EntityId) : nullptr;
+            auto Player = UTIL_PlayerByIndexSafe(EntityId);
+            if (Player) {
+              pEntity = Player->edict();
+            }
           }
 
           // If is not empty
@@ -458,7 +462,7 @@ void CLogApi::PrintChat(int EventIndex, nlohmann::ordered_json Data) {
 }
 
 // Print to hudmessage chat from result
-void CLogApi::ShowHudMessage(int EventIndex, nlohmann::ordered_json Data) {
+void CLogApi::ShowHudMessage(int EventIndex, const nlohmann::ordered_json& Data) {
   // If is not empty
   if (!Data[__func__].empty()) {
     try {
@@ -482,8 +486,10 @@ void CLogApi::ShowHudMessage(int EventIndex, nlohmann::ordered_json Data) {
           // If has entity index
           if (EntityId > 0) {
             // Get entity pointer
-            pEntity =
-                FNullEnt(INDEXENT(EntityId)) ? INDEXENT(EntityId) : nullptr;
+            auto Player = UTIL_PlayerByIndexSafe(EntityId);
+            if (Player) {
+              pEntity = Player->edict();
+            }
           }
 
           // If is not empty

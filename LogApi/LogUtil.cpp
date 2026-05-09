@@ -4,8 +4,9 @@ CLogUtil gLogUtil;
 
 void CLogUtil::ServerExecute(std::string Command) {
   if (!Command.empty()) {
-    Command += "\n";
-    g_engfuncs.pfnServerCommand(const_cast<char *>(Command.c_str()));
+    char Buffer[1024];
+    Q_strncpy(Buffer, Command.c_str(), sizeof(Buffer));
+    g_engfuncs.pfnServerCommand(Buffer);
   }
 }
 
@@ -204,16 +205,20 @@ CBasePlayer *CLogUtil::FindPlayer(std::string Target) {
 
           if (Player) {
             if (!Player->IsDormant()) {
-              std::string Name = STRING(Player->edict()->v.netname);
+              if (Player->edict()) {
+                if (Player->edict()->v.netname) {
+                  std::string Name = STRING(Player->edict()->v.netname);
 
-              if (!Name.empty()) {
-                std::transform(Name.begin(), Name.end(), Name.begin(),
-                               [](unsigned char character) {
-                                 return std::tolower(character);
-                               });
+                  if (!Name.empty()) {
+                    std::transform(Name.begin(), Name.end(), Name.begin(),
+                                   [](unsigned char character) {
+                                     return std::tolower(character);
+                                   });
 
-                if (Name.find(Target) != std::string::npos) {
-                  return Player;
+                    if (Name.find(Target) != std::string::npos) {
+                      return Player;
+                    }
+                  }
                 }
               }
             }

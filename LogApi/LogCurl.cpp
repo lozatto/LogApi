@@ -8,7 +8,11 @@ void CLogCurl::ServerActivate() {
 
     this->m_Data.clear();
 
-    curl_global_init(CURL_GLOBAL_ALL);
+    static bool GlobalInit = false;
+    if (!GlobalInit) {
+      curl_global_init(CURL_GLOBAL_ALL);
+      GlobalInit = true;
+    }
 
     this->m_MultiHandle = curl_multi_init();
   }
