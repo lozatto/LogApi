@@ -376,7 +376,8 @@ const char *CLogUtil::GetAuthId(edict_t *pEntity) {
     if (Auth) {
       if (Auth[0u] != '\0') {
         if (!Q_stricmp(Auth, "BOT")) {
-          return STRING(pEntity->v.netname);
+          auto NetName = STRING(pEntity->v.netname);
+          return NetName ? NetName : "BOT";
         }
 
         return Auth;

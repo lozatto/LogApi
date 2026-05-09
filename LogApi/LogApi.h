@@ -19,7 +19,7 @@ public:
 	int EventEnabled(const char* EventName);
 
 	// Send Event
-	void SendEvent(int EventIndex, nlohmann::ordered_json EventData);
+	void SendEvent(int EventIndex, const nlohmann::ordered_json& EventData);
 
 	// Callback Result
 	void CallbackResult(CURL* ch, size_t Size, const char* Memory, int EventIndex);

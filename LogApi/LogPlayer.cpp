@@ -70,7 +70,8 @@ void CLogPlayer::Update(edict_t *pEdict) {
 
       this->m_Players[Auth].Auth = Auth;
 
-      this->m_Players[Auth].Name = STRING(pEdict->v.netname);
+      auto NetName = STRING(pEdict->v.netname);
+      this->m_Players[Auth].Name = NetName ? NetName : "";
 
       this->m_Players[Auth].UserId = g_engfuncs.pfnGetPlayerUserId(pEdict);
 
@@ -125,8 +126,11 @@ nlohmann::ordered_json CLogPlayer::GetPlayerJson(edict_t *pEdict) {
 
   if (!FNullEnt(pEdict)) {
     auto Auth = g_engfuncs.pfnGetPlayerAuthId(pEdict);
+    if (!Auth) {
+      Auth = "";
+    }
 
-    if (Auth) {
+    if (Auth[0u] != '\0') {
       auto Player = this->GetPlayer(Auth);
 
       if (Player != nullptr) {

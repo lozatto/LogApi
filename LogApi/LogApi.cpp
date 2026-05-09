@@ -125,7 +125,7 @@ int CLogApi::EventEnabled(const char *EventName) {
 }
 
 // Send event
-void CLogApi::SendEvent(int EventIndex, nlohmann::ordered_json Event) {
+void CLogApi::SendEvent(int EventIndex, const nlohmann::ordered_json& Event) {
   // Is Running
   if (this->m_Running) {
     // If address is set
@@ -139,7 +139,7 @@ void CLogApi::SendEvent(int EventIndex, nlohmann::ordered_json Event) {
             // If JSON is not empty
             if (!Event.empty()) {
               if (gLogCvar.m_Timeout) {
-                if (gLogCvar.m_Bearer) {
+                if (gLogCvar.m_Bearer && gLogCvar.m_Bearer->string) {
                   try {
                     // POST to webserver
                     // Use error_handler_t::replace to avoid crashes on invalid UTF-8
@@ -506,10 +506,12 @@ nlohmann::ordered_json CLogApi::GetServerInfo() {
   nlohmann::ordered_json ServerInfo;
 
   // Set address
-  ServerInfo["Address"] = g_engfuncs.pfnCVarGetString("net_address");
+  auto NetAddress = g_engfuncs.pfnCVarGetString("net_address");
+  ServerInfo["Address"] = NetAddress ? NetAddress : "";
 
   // Set hostname
-  ServerInfo["Hostname"] = g_engfuncs.pfnCVarGetString("hostname");
+  auto Hostname = g_engfuncs.pfnCVarGetString("hostname");
+  ServerInfo["Hostname"] = Hostname ? Hostname : "";
 
   // Set map name
   ServerInfo["Map"] = STRING(gpGlobals->mapname);

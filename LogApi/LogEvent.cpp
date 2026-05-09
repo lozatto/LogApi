@@ -6,17 +6,17 @@ void CLogEvent::ServerActivate(edict_t* pEdictList, int edictCount, int clientMa
 {
 	if (gLogApi.EventEnabled(__func__))
 	{ 
-		this->m_Event.clear();
+		nlohmann::ordered_json Event;
 
-		this->m_Event["Event"] = __func__;
+		Event["Event"] = __func__;
 
-		this->m_Event["Server"] = gLogApi.GetServerInfo();
+		Event["Server"] = gLogApi.GetServerInfo();
 
-		this->m_Event["EdictCount"] = edictCount;
+		Event["EdictCount"] = edictCount;
 
-		this->m_Event["ClientMax"] = clientMax;
+		Event["ClientMax"] = clientMax;
 
-		gLogApi.SendEvent(LogApi::Events::ServerActivate, this->m_Event);
+		gLogApi.SendEvent(LogApi::Events::ServerActivate, Event);
 	}
 }
 
@@ -24,13 +24,13 @@ void CLogEvent::ServerDeactivate()
 {
 	if (gLogApi.EventEnabled(__func__))
 	{
-		this->m_Event.clear();
+		nlohmann::ordered_json Event;
 
-		this->m_Event["Event"] = __func__;
+		Event["Event"] = __func__;
 
-		this->m_Event["Server"] = gLogApi.GetServerInfo();
+		Event["Server"] = gLogApi.GetServerInfo();
 
-		gLogApi.SendEvent(LogApi::Events::ServerDeactivate, this->m_Event);
+		gLogApi.SendEvent(LogApi::Events::ServerDeactivate, Event);
 	}
 }
 
@@ -42,17 +42,17 @@ void CLogEvent::ServerAlertMessage(ALERT_TYPE aType, const char* szBuffer)
 		{
 			if (szBuffer[0u] != '\0')
 			{
-				this->m_Event.clear();
+				nlohmann::ordered_json Event;
 
-				this->m_Event["Event"] = __func__;
+				Event["Event"] = __func__;
 
-				this->m_Event["Server"] = gLogApi.GetServerInfo();
+				Event["Server"] = gLogApi.GetServerInfo();
 
-				this->m_Event["Type"] = aType;
+				Event["Type"] = aType;
 
-				this->m_Event["Message"] = szBuffer;
+				Event["Message"] = szBuffer;
 
-				gLogApi.SendEvent(LogApi::Events::ServerAlertMessage, this->m_Event);
+				gLogApi.SendEvent(LogApi::Events::ServerAlertMessage, Event);
 			}
 		}
 	}
@@ -62,13 +62,13 @@ void CLogEvent::ServerInfo()
 {
 	if (gLogApi.EventEnabled(__func__))
 	{
-		this->m_Event.clear();
+		nlohmann::ordered_json Event;
 
-		this->m_Event["Event"] = __func__;
+		Event["Event"] = __func__;
 
-		this->m_Event["Server"] = gLogApi.GetServerInfo();
+		Event["Server"] = gLogApi.GetServerInfo();
 
-		gLogApi.SendEvent(LogApi::Events::ServerInfo, this->m_Event);
+		gLogApi.SendEvent(LogApi::Events::ServerInfo, Event);
 	}
 }
 
@@ -76,18 +76,18 @@ void CLogEvent::ClientConnect(edict_t* pEdict, const char* pszName, const char* 
 {
 	if (gLogApi.EventEnabled(__func__))
 	{
-		this->m_Event.clear();
+		nlohmann::ordered_json Event;
 
 		if (!FNullEnt(pEdict))
 		{
-			this->m_Event["Event"] = __func__;
+			Event["Event"] = __func__;
 
-			this->m_Event["Server"] = gLogApi.GetServerInfo();
+			Event["Server"] = gLogApi.GetServerInfo();
 
-			this->m_Event["Player"] = gLogPlayer.GetPlayerJson(pEdict);
+			Event["Player"] = gLogPlayer.GetPlayerJson(pEdict);
 		}
 
-		gLogApi.SendEvent(LogApi::Events::ClientConnect, this->m_Event);
+		gLogApi.SendEvent(LogApi::Events::ClientConnect, Event);
 	}
 }
 
@@ -95,18 +95,18 @@ void CLogEvent::ClientPutInServer(edict_t* pEdict)
 {
 	if (gLogApi.EventEnabled(__func__))
 	{
-		this->m_Event.clear();
+		nlohmann::ordered_json Event;
 
 		if (!FNullEnt(pEdict))
 		{
-			this->m_Event["Event"] = __func__;
+			Event["Event"] = __func__;
 
-			this->m_Event["Server"] = gLogApi.GetServerInfo();
+			Event["Server"] = gLogApi.GetServerInfo();
 
-			this->m_Event["Player"] = gLogPlayer.GetPlayerJson(pEdict);
+			Event["Player"] = gLogPlayer.GetPlayerJson(pEdict);
 		}
 		
-		gLogApi.SendEvent(LogApi::Events::ClientPutInServer, this->m_Event);
+		gLogApi.SendEvent(LogApi::Events::ClientPutInServer, Event);
 	}
 }
 
@@ -114,22 +114,22 @@ void CLogEvent::ClientDisconnect(edict_t* pEdict, bool Crash, const char* Reason
 {
 	if (gLogApi.EventEnabled(__func__))
 	{
-		this->m_Event.clear();
+		nlohmann::ordered_json Event;
 
 		if (!FNullEnt(pEdict))
 		{
-			this->m_Event["Event"] = __func__;
+			Event["Event"] = __func__;
 
-			this->m_Event["Server"] = gLogApi.GetServerInfo();
+			Event["Server"] = gLogApi.GetServerInfo();
 
-			this->m_Event["Player"] = gLogPlayer.GetPlayerJson(pEdict);
+			Event["Player"] = gLogPlayer.GetPlayerJson(pEdict);
 
-			this->m_Event["Crash"] = Crash;
+			Event["Crash"] = Crash;
 
-			this->m_Event["Reason"] = Reason ? Reason : "";
+			Event["Reason"] = Reason ? Reason : "";
 		}
 
-		gLogApi.SendEvent(LogApi::Events::ClientDisconnect, this->m_Event);
+		gLogApi.SendEvent(LogApi::Events::ClientDisconnect, Event);
 	}
 }
 
@@ -137,18 +137,18 @@ void CLogEvent::ClientKill(edict_t* pEdict)
 {
 	if (gLogApi.EventEnabled(__func__))
 	{
-		this->m_Event.clear();
+		nlohmann::ordered_json Event;
 
 		if (!FNullEnt(pEdict))
 		{
-			this->m_Event["Event"] = __func__;
+			Event["Event"] = __func__;
 
-			this->m_Event["Server"] = gLogApi.GetServerInfo();
+			Event["Server"] = gLogApi.GetServerInfo();
 
-			this->m_Event["Player"] = gLogPlayer.GetPlayerJson(pEdict);
+			Event["Player"] = gLogPlayer.GetPlayerJson(pEdict);
 		}
 
-		gLogApi.SendEvent(LogApi::Events::ClientKill, this->m_Event);
+		gLogApi.SendEvent(LogApi::Events::ClientKill, Event);
 	}
 }
 
@@ -156,20 +156,20 @@ void CLogEvent::ClientUserInfoChanged(edict_t* pEdict, char* InfoBuffer)
 {
 	if (gLogApi.EventEnabled(__func__))
 	{
-		this->m_Event.clear();
+		nlohmann::ordered_json Event;
 
 		if (!FNullEnt(pEdict))
 		{
-			this->m_Event["Event"] = __func__;
+			Event["Event"] = __func__;
 
-			this->m_Event["Server"] = gLogApi.GetServerInfo();
+			Event["Server"] = gLogApi.GetServerInfo();
 
-			this->m_Event["Player"] = gLogPlayer.GetPlayerJson(pEdict);
+			Event["Player"] = gLogPlayer.GetPlayerJson(pEdict);
 
-			this->m_Event["InfoBuffer"] = InfoBuffer;
+			Event["InfoBuffer"] = InfoBuffer ? InfoBuffer : "";
 		}
 
-		gLogApi.SendEvent(LogApi::Events::ClientUserInfoChanged, this->m_Event);
+		gLogApi.SendEvent(LogApi::Events::ClientUserInfoChanged, Event);
 	}
 }
 
@@ -177,7 +177,7 @@ void CLogEvent::ClientCommand(edict_t* pEdict)
 {
 	if (gLogApi.EventEnabled(__func__))
 	{
-		this->m_Event.clear();
+		nlohmann::ordered_json Event;
 
 		if (!FNullEnt(pEdict))
 		{
@@ -187,15 +187,15 @@ void CLogEvent::ClientCommand(edict_t* pEdict)
 			{
 				if (Command[0u] != '\0')
 				{
-					this->m_Event["Event"] = __func__;
+					Event["Event"] = __func__;
 
-					this->m_Event["Server"] = gLogApi.GetServerInfo();
+					Event["Server"] = gLogApi.GetServerInfo();
 
-					this->m_Event["Player"] = gLogPlayer.GetPlayerJson(pEdict);
+					Event["Player"] = gLogPlayer.GetPlayerJson(pEdict);
 
-					this->m_Event["Command"] = Command;
+					Event["Command"] = Command;
 
-					this->m_Event["Args"] = "";
+					Event["Args"] = "";
 
 					auto Args = g_engfuncs.pfnCmd_Args();
 
@@ -203,14 +203,14 @@ void CLogEvent::ClientCommand(edict_t* pEdict)
 					{
 						if (Args[0u] != '\0')
 						{
-							this->m_Event["Args"] = Args;
+							Event["Args"] = Args;
 						}
 					}
 				}
 			}
 		}
 
-		gLogApi.SendEvent(LogApi::Events::ClientCommand, this->m_Event);
+		gLogApi.SendEvent(LogApi::Events::ClientCommand, Event);
 	}
 }
 
@@ -218,7 +218,7 @@ void CLogEvent::ClientSay(edict_t* pEdict)
 {
 	if (gLogApi.EventEnabled(__func__))
 	{
-		this->m_Event.clear();
+		nlohmann::ordered_json Event;
 
 		if (!FNullEnt(pEdict))
 		{
@@ -238,15 +238,15 @@ void CLogEvent::ClientSay(edict_t* pEdict)
 							{
 								Message.erase(std::remove(Message.begin(), Message.end(), '\"'),Message.end());
 
-								this->m_Event["Event"] = __func__;
+								Event["Event"] = __func__;
 
-								this->m_Event["Server"] = gLogApi.GetServerInfo();
+								Event["Server"] = gLogApi.GetServerInfo();
 
-								this->m_Event["Player"] = gLogPlayer.GetPlayerJson(pEdict);
+								Event["Player"] = gLogPlayer.GetPlayerJson(pEdict);
 
-								this->m_Event["Type"] = Type;
+								Event["Type"] = Type;
 
-								this->m_Event["Message"] = Message;
+								Event["Message"] = Message;
 							}
 						}
 					}
@@ -254,7 +254,7 @@ void CLogEvent::ClientSay(edict_t* pEdict)
 			}
 		}
 
-		gLogApi.SendEvent(LogApi::Events::ClientSay, this->m_Event);
+		gLogApi.SendEvent(LogApi::Events::ClientSay, Event);
 	}
 }
 
@@ -264,26 +264,26 @@ void CLogEvent::ClientMenuHandle(edict_t* pEdict, std::string Callback, P_MENU_I
 	{
 		if (!Callback.empty())
 		{
-			this->m_Event.clear();
+			nlohmann::ordered_json Event;
 
 			if (!FNullEnt(pEdict))
 			{
-				this->m_Event["Event"] = Callback;
+				Event["Event"] = Callback;
 
-				this->m_Event["Server"] = gLogApi.GetServerInfo();
+				Event["Server"] = gLogApi.GetServerInfo();
 
-				this->m_Event["Player"] = gLogPlayer.GetPlayerJson(pEdict);
+				Event["Player"] = gLogPlayer.GetPlayerJson(pEdict);
 
-				this->m_Event["Item"]["Info"] = Item.Info;
+				Event["Item"]["Info"] = Item.Info;
 
-				this->m_Event["Item"]["Text"] = Item.Text;
+				Event["Item"]["Text"] = Item.Text;
 
-				this->m_Event["Item"]["Disabled"] = Item.Disabled;
+				Event["Item"]["Disabled"] = Item.Disabled;
 
-				this->m_Event["Item"]["Extra"] = Item.Extra;
+				Event["Item"]["Extra"] = Item.Extra;
 			}
 
-			gLogApi.SendEvent(LogApi::Events::ClientMenuHandle, this->m_Event);
+			gLogApi.SendEvent(LogApi::Events::ClientMenuHandle, Event);
 		}
 	}
 }
