@@ -67,7 +67,6 @@ void CLogApi::ServerActivate() {
     LOG_CONSOLE(PLID, "[%s] Exception: %s", __func__, e.what());
   }
 
-  }
 }
 
 // On server deactivate
