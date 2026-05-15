@@ -42,6 +42,8 @@ bool ReGameDLL_Init()
 										g_ReGameHookchains->InstallGameRules()->registerHook(ReGameDLL_InstallGameRules);
 
                                         g_ReGameHookchains->InternalCommand()->registerHook(ReGameDLL_InternalCommand);
+									}
+
 									return true;
 								}
 							}

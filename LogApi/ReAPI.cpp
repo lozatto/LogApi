@@ -44,6 +44,8 @@ bool ReAPI_Init()
 							if (g_RehldsHookchains)
 							{
 								g_RehldsHookchains->SV_DropClient()->registerHook(ReAPI_SV_DropClient);
+							}
+
 							return true;
 						}
 					}
