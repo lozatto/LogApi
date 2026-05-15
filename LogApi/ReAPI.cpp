@@ -46,6 +46,8 @@ bool ReAPI_Init()
 								g_RehldsHookchains->SV_DropClient()->registerHook(ReAPI_SV_DropClient);
 							}
 
+							gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] ReHLDS API Loaded: %d.%d", Plugin_info.logtag, REHLDS_API_VERSION_MAJOR, REHLDS_API_VERSION_MINOR);
+
 							return true;
 						}
 					}
