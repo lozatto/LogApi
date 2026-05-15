@@ -42,10 +42,6 @@ bool ReGameDLL_Init()
 										g_ReGameHookchains->InstallGameRules()->registerHook(ReGameDLL_InstallGameRules);
 
                                         g_ReGameHookchains->InternalCommand()->registerHook(ReGameDLL_InternalCommand);
-									}
-
-									gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] ReGameDLL API Loaded: %d.%d", Plugin_info.logtag, REGAMEDLL_API_VERSION_MAJOR, REGAMEDLL_API_VERSION_MINOR);
-
 									return true;
 								}
 							}

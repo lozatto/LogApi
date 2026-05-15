@@ -57,8 +57,6 @@ void CLogApi::ServerActivate() {
 
     // Close file pointer
     fclose(fp);
-
-    LOG_CONSOLE(PLID, "[%s] Loaded %d events from %s", __func__, this->m_Events.size(), LOG_API_FILE_EVENTS);
     } else {
       // Failed on error
       LOG_CONSOLE(PLID, "[%s] Failed to open file: %s", __func__,
@@ -69,7 +67,7 @@ void CLogApi::ServerActivate() {
     LOG_CONSOLE(PLID, "[%s] Exception: %s", __func__, e.what());
   }
 
-  LOG_CONSOLE(PLID, "[%s] Finished", __func__);
+  }
 }
 
 // On server deactivate
@@ -336,8 +334,6 @@ void CLogApi::ShowMenu(int EventIndex, const nlohmann::ordered_json& Data) {
           } catch (const nlohmann::ordered_json::exception &e) {
             LOG_CONSOLE(PLID, "[%s] %s", __func__, e.what());
           }
-        } else {
-          LOG_CONSOLE(PLID, "[%s] Menu is empty", __func__);
         }
       }
     }

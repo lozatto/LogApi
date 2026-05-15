@@ -30,10 +30,6 @@ C_DLLEXPORT void WINAPI GiveFnptrsToDll(enginefuncs_t *pengfuncsFromEngine,
 C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable,
                             meta_globals_t *pMGlobals,
                             gamedll_funcs_t *pGamedllFuncs) {
-  if (gpMetaUtilFuncs) {
-    gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] Meta_Attach Start", Plugin_info.logtag);
-  }
-
   gpMetaGlobals = pMGlobals;
 
   gpGamedllFuncs = pGamedllFuncs;
@@ -58,10 +54,6 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable,
 
   ReGameDLL_Init();
 
-  if (gpMetaUtilFuncs) {
-    gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] Meta_Attach Finished", Plugin_info.logtag);
-  }
-
   return TRUE;
 }
 
@@ -78,10 +70,6 @@ C_DLLEXPORT int Meta_Query(char *interfaceVersion, plugin_info_t **pPlugInfo,
   *pPlugInfo = PLID;
 
   gpMetaUtilFuncs = pMetaUtilFuncs;
-
-  if (gpMetaUtilFuncs) {
-    gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] Meta_Query Finished", Plugin_info.logtag);
-  }
 
   return TRUE;
 }
@@ -133,27 +121,15 @@ C_DLLEXPORT int GetEntityAPI2_Post(DLL_FUNCTIONS *pFunctionTable,
 
 void DLL_POST_ServerActivate(edict_t *pEdictList, int edictCount,
                              int clientMax) {
-  LOG_CONSOLE(PLID, "[%s] Start", __func__);
-
   gLogCvar.ServerActivate();
-
-  LOG_CONSOLE(PLID, "[%s] LogCvar initialized", __func__);
 
   gLogApi.ServerActivate();
 
-  LOG_CONSOLE(PLID, "[%s] LogApi initialized", __func__);
-
   gLogCurl.ServerActivate();
-
-  LOG_CONSOLE(PLID, "[%s] LogCurl initialized", __func__);
 
   gLogCommand.ServerActivate();
 
-  LOG_CONSOLE(PLID, "[%s] LogCommand initialized", __func__);
-
   gLogEvent.ServerActivate(pEdictList, edictCount, clientMax);
-
-  LOG_CONSOLE(PLID, "[%s] LogEvent initialized", __func__);
 
   RETURN_META(MRES_IGNORED);
 }
